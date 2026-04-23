@@ -33,6 +33,16 @@ public class CitaRepositoryAdapter implements CitaRepository {
     }
 
     @Override
+    public boolean existeCitaEnRangoExcluyendoId(Long medicoId, Long citaId, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
+        return jpa.existsOverlappingExcluyendoId(
+                medicoId,
+                citaId,
+                fechaInicio,
+                fechaFin
+        );
+    }
+
+    @Override
     public List<Cita> buscarPorPacienteId(Long pacienteId) {
         return jpa.findCitaEntitiesByPacienteId(pacienteId).stream().map(citaMapper::toDomain).toList();
     }

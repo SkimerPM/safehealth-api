@@ -22,6 +22,22 @@ public interface JpaCitaRepository extends JpaRepository<CitaEntity, Long> {
     boolean existsOverlapping(@Param("medicoId") Long medicoId,
                               @Param("inicio") LocalDateTime inicio,
                               @Param("fin") LocalDateTime fin);
+
+    @Query("""
+    SELECT COUNT(c) > 0 FROM CitaEntity c 
+    WHERE c.medico.id = :medicoId 
+    AND c.id <> :citaIdIgnorar 
+    AND c.estado <> com.skm.safehealthskm.domain.model.enums.EstadoCita.CANCELADA
+    AND (c.fechaInicio < :fin AND c.fechaFin > :inicio)
+    """)
+    boolean existsOverlappingExcluyendoId(
+            @Param("medicoId") Long medicoId,
+            @Param("citaIdIgnorar") Long citaIdIgnorar,
+            @Param("inicio") LocalDateTime inicio,
+            @Param("fin") LocalDateTime fin);
+
+
     List<CitaEntity> findCitaEntitiesByPacienteId(Long pacienteId);
+
     List<CitaEntity> findCitaEntitiesByMedicoId(Long medicoId);
 }

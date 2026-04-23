@@ -9,6 +9,7 @@ public interface CitaRepository {
     Cita guardar(Cita cita);
     boolean existeCitaEnRango(Long medicoId, LocalDateTime fechaInicio, LocalDateTime fechaFin);
 
+    boolean existeCitaEnRangoExcluyendoId(Long medicoId, Long citaId, LocalDateTime fechaInicio, LocalDateTime fechaFin);
     List<Cita> buscarPorPacienteId(Long pacienteId);
     List<Cita> buscarPorMedicoId(Long medicoId);
     java.util.Optional<Cita> obtenerPorId(Long id);
